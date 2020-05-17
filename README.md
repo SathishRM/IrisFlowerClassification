@@ -12,7 +12,7 @@ This contians 3 labels Iris-setosa, Iris-versicolor and Iris-virginica to predic
 
 Pipeline is used to build the transformation of data which will be fed to the model creation. The model is tuned with the set of parameters and choosen the best one using an evaluator with the metric configured.
 
-###Predict Flower###
+### Predict Flower ###
 command: spark-submit --master spark://[hostname]:[port#] irisflowerpredict.py [sepalLength] [sepalWidth] [petalLength] [petalWidth]
 Argument values are the measurements in centimeters 
 
