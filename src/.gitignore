@@ -7,4 +7,5 @@ spark-warehouse
 #Other files
 -------------
 *.org
-resources
+../resources/data
+../resources/metadata
