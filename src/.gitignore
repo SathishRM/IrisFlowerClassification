@@ -1,0 +1,10 @@
+#OS files
+-----------
+__pycache__
+*.pyc
+spark-warehouse
+
+#Other files
+-------------
+*.org
+resources
