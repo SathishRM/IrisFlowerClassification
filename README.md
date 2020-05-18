@@ -15,7 +15,10 @@ Pipeline is used to build the transformation of data which will be fed to the mo
 ### Predict Flower ###
 Command: spark-submit --master spark://[hostname]:[port#] irisflowerpredict.py [sepalLength] [sepalWidth] [petalLength] [petalWidth]
 
+This predicts the flower for the measurements passed as argument. Argument values are the measurements in centimeter
+
 Example: irisflowerpredict.py 7.6 2.7 6.9 2.2
 
-Argument values are the measurements in centimeter
+
+Prerequisite: The model should be tranined and available in the disk for loading so the model tranining script needs to execute first.
 
