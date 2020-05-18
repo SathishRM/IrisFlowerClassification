@@ -10,10 +10,12 @@ Reads the data in the CSV file from the input path, tune it with the parameters 
 Features used are sepal_length, sepal_width, petal_length and petal_width.
 This contians 3 labels Iris-setosa, Iris-versicolor and Iris-virginica to predict.
 
-Pipeline is used to build the transformation of data which will be fed to the model creation. The model is tuned with the set of parameters and choosen the best one using an evaluator with the metric configured.
+Pipeline is used to build the transformation of data which will be fed to the model creation. The model is tuned with the set of parameters and choosen the best one using an evaluator with the metric configured. Saves the best model in the disk for the future predictions.
 
 ### Predict Flower ###
 Command: spark-submit --master spark://[hostname]:[port#] irisflowerpredict.py [sepalLength] [sepalWidth] [petalLength] [petalWidth]
+
+Example: irisflowerpredict.py 7.6 2.7 6.9 2.2
 
 Argument values are the measurements in centimeter
 
