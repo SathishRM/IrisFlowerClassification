@@ -1,25 +1,32 @@
 from pyspark.sql import SparkSession
-from pyspark.ml.feature import VectorAssembler, StandardScaler
-from pyspark.ml.classification import LogisticRegressionModel
+from pyspark.ml import PipelineModel
 import argparse
 from util.applogger import getAppLogger
 from util.appconfigreader import AppConfigReader
 
 def flowerPrediction(sepalLength, sepalWidth, petalLength, petalWidth):
     irisData = spark.createDataFrame([(sepalLength,sepalWidth,petalLength,petalWidth)],['sepal_length', 'sepal_width', 'petal_length', 'petal_width'])
-    vaData = VectorAssembler(inputCols=['sepal_length', 'sepal_width', 'petal_length', 'petal_width'], outputCol='vecFeatures').transform(irisData)
-    modelData = StandardScaler(inputCol= 'vecFeatures', outputCol='features').fit(vaData).transform(vaData)
-
-    lrModel = LogisticRegressionModel().load(modelDir)
-    if lrModel:
-        logger.info('Model has been loaded and going to predict for the values passed')
-        predictedValue = lrModel.transform(modelData).select('prediction').collect()
-        logger.info(f'Value predicted is {predictedValue[0].prediction}')
+    # vaData = VectorAssembler(inputCols=['sepal_length', 'sepal_width', 'petal_length', 'petal_width'], outputCol='vecFeatures').transform(irisData)
+    # modelData = StandardScaler(inputCol= 'vecFeatures', outputCol='features').fit(vaData).transform(vaData)
+    pipelineModel = PipelineModel.load(modelDir)
+    if pipelineModel:
+        vaData = pipelineModel.stages[1].transform(irisData)
+        modelData = pipelineModel.stages[2].transform(vaData)
+        lrModel = pipelineModel.stages[3]
+        indexString = pipelineModel.stages[4]
+        if vaData and modelData and lrModel and indexString:
+            logger.info('Model has been loaded and going to predict for the values passed')
+            prediction = lrModel.transform(modelData).select('prediction')
+            predictedValue = indexString.transform(prediction).collect()
+            logger.info(f'Value predicted is {predictedValue[0].predictedLabel}')
+            return predictedValue[0].predictedLabel
+        else:
+            logger.error(f'Problem in loading the one of the stages from the model saved in the location {modelDir}')
+            raise SystemExit(3)
     else:
         logger.error(f'Problem in loading the model from the directory {modelDir}')
         raise SystemExit(3)
 
-    return predictedValue[0].prediction
 
 
 if __name__ == '__main__':
