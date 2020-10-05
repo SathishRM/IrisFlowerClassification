@@ -18,7 +18,6 @@ def flowerPrediction(sepalLength, sepalWidth, petalLength, petalWidth):
             logger.info('Model has been loaded and going to predict for the values passed')
             prediction = lrModel.transform(modelData).select('prediction')
             predictedValue = indexString.transform(prediction).collect()
-            logger.info(f'Value predicted is {predictedValue[0].predictedLabel}')
             return predictedValue[0].predictedLabel
         else:
             logger.error(f'Problem in loading the one of the stages from the model saved in the location {modelDir}')
@@ -58,6 +57,7 @@ if __name__ == '__main__':
             if spark:
                 logger.info('Predicts the flower for the given values...')
                 predictedValue = flowerPrediction(args.sepalLength,args.sepalWidth,args.petalLength,args.petalWidth)
+                logger.info(f'Value predicted is {predictedValue}')
         else:
             logger.error(f'Missing some required parameters, please checkt the script help for the list of arguments required')
             raise SystemExit(2)
